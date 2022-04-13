@@ -136,7 +136,7 @@ namespace motioncontrol {
                     j++;
             }
             catch (tf2::TransformException& ex) {
-                ROS_WARN("%s", ex.what());
+                // ROS_WARN("%s", ex.what());
                 ROS_FATAL("Sensor Black Out");
                 ros::Duration(1.0).sleep();
                 
