@@ -415,6 +415,7 @@ void Arm::qualityControl4Callback(const nist_gear::LogicalCameraImage::ConstPtr&
         arm_group_.move();
         ros::Duration(2.0).sleep();
         deactivateGripper();
+        arm_group_.setMaxVelocityScalingFactor(0.5);
         goToPresetLocation(agv);
         arm_group_.setMaxVelocityScalingFactor(1.0);
         auto part_type=get_part_type_name();
