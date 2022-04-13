@@ -208,6 +208,8 @@ int kit(ros::NodeHandle& node_handle, std::vector<std::pair<std::string, int>> &
             
             arm.movePart(iter.first.type, part_frame, iter.first.pose, kitting_shipment.agv_id);
             product_placed_in_shipment++;
+            ROS_FATAL_STREAM(product_placed_in_shipment);
+            ROS_FATAL_STREAM(kitting_shipment.products.size());
             // if we have placed all products in this shipment then ship the AGV
             if (product_placed_in_shipment == kitting_shipment.products.size()) {
                 ros::Duration(sleep(1.0));

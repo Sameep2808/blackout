@@ -116,13 +116,28 @@ namespace motioncontrol {
         geometry_msgs::TransformStamped ee_target_tf;
 
 
-        for (int i = 0; i < 10; i++) {
+        // for (int i = 0; i < 10; i++) {
+        //     try {
+        //         world_target_tf = tfBuffer.lookupTransform("world", part_in_camera_frame,
+        //             ros::Time(0), timeout);
+        //     }
+        //     catch (tf2::TransformException& ex) {
+        //         ROS_WARN("%s", ex.what());
+        //         ros::Duration(1.0).sleep();
+                
+        //         continue;
+        //     }
+        // }
+        int j=0;
+        for (int i = 0; j < 10; i++) {
             try {
                 world_target_tf = tfBuffer.lookupTransform("world", part_in_camera_frame,
                     ros::Time(0), timeout);
+                    j++;
             }
             catch (tf2::TransformException& ex) {
                 ROS_WARN("%s", ex.what());
+                ROS_FATAL("Sensor Black Out");
                 ros::Duration(1.0).sleep();
                 
                 continue;
