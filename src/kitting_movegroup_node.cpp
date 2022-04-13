@@ -192,6 +192,9 @@ int kit(ros::NodeHandle& node_handle, std::vector<std::pair<std::string, int>> &
             if(orderid.compare(on) != 0){
                 ROS_FATAL_STREAM("HIGH PRIORITY ORDER");
                 ROS_FATAL_STREAM(on); 
+                orderid = on;   
+                ros::NodeHandle nh;
+                int fr = kit(nh, product_list); 
             }
             
             int* co;
@@ -208,28 +211,29 @@ int kit(ros::NodeHandle& node_handle, std::vector<std::pair<std::string, int>> &
             
             arm.movePart(iter.first.type, part_frame, iter.first.pose, kitting_shipment.agv_id);
             product_placed_in_shipment++;
-            ROS_FATAL_STREAM(product_placed_in_shipment);
-            ROS_FATAL_STREAM(kitting_shipment.products.size());
+            ROS_INFO_STREAM(product_placed_in_shipment);
+            ROS_INFO_STREAM(kitting_shipment.products.size());
             // if we have placed all products in this shipment then ship the AGV
             if (product_placed_in_shipment == kitting_shipment.products.size()) {
-                ros::Duration(sleep(1.0));
+                ROS_FATAL_STREAM("SHIPPING");
+                ros::Duration(sleep(5.0));
                 motioncontrol::Agv agv{ node_handle, kitting_shipment.agv_id };
                 if (agv.getAGVStatus()) {
                     agv.shipAgv(kitting_shipment.shipment_type, kitting_shipment.station_id);
-                    ros::Duration(10.0).sleep();
+                    ros::Duration(2.0).sleep();
                 }
                 // ros::Duration(2.0).sleep();
             }
         }
 
-        auto on = competition.get_order_id();
-        if(orderid.compare(on) != 0){
-                ROS_FATAL_STREAM("HIGH PRIORITY ORDER");
-                ROS_FATAL_STREAM(on);
-                orderid = on;   
-                ros::NodeHandle nh;
-                int fr = kit(nh, product_list); 
-        }
+        // auto on = competition.get_order_id();
+        // if(orderid.compare(on) != 0){
+        //         ROS_FATAL_STREAM("HIGH PRIORITY ORDER");
+        //         ROS_FATAL_STREAM(on);
+        //         orderid = on;   
+        //         ros::NodeHandle nh;
+        //         int fr = kit(nh, product_list); 
+        // }
        
         
     }
