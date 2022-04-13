@@ -222,26 +222,26 @@ void Arm::qualityControl4Callback(const nist_gear::LogicalCameraImage::ConstPtr&
             z_pos = 0.863;
         }
         if (part_type.find("sensor") != std::string::npos) {
-            z_pos = 0.83;
+            z_pos = 0.833;
         }
         if (part_type.find("regulator") != std::string::npos) {
-            z_pos = 0.81;
+            z_pos = 0.813;
         }
         if (part_type.find("battery") != std::string::npos) {
-            z_pos = 0.79;
+            z_pos = 0.793;
         }}
         else{
             if (part_type.find("pump") != std::string::npos) {
             z_pos = 0.883;
         }
         if (part_type.find("sensor") != std::string::npos) {
-            z_pos = 0.85;
+            z_pos = 0.853;
         }
         if (part_type.find("regulator") != std::string::npos) {
-            z_pos = 0.83;
+            z_pos = 0.833;
         }
         if (part_type.find("battery") != std::string::npos) {
-            z_pos = 0.82;
+            z_pos = 0.823;
         }
         }
 
@@ -284,8 +284,8 @@ void Arm::qualityControl4Callback(const nist_gear::LogicalCameraImage::ConstPtr&
         and retreat grasp motions. Here we demonstrate how to reduce the speed and the acceleration
         of the robot arm via a scaling factor of the maxiumum speed of each joint.
         */
-        arm_group_.setMaxVelocityScalingFactor(0.05);
-        arm_group_.setMaxAccelerationScalingFactor(0.05);
+        arm_group_.setMaxVelocityScalingFactor(0.1); // 0.05
+        arm_group_.setMaxAccelerationScalingFactor(0.1);
         // plan the cartesian motion and execute it
         moveit_msgs::RobotTrajectory trajectory;
         const double jump_threshold = 0.0;
@@ -299,7 +299,7 @@ void Arm::qualityControl4Callback(const nist_gear::LogicalCameraImage::ConstPtr&
 
         // move the arm 1 mm down until the part is attached
         while (!gripper_state_.attached) {
-            grasp_pose.position.z -= 0.001;
+            grasp_pose.position.z -= 0.005; // 0.001
             arm_group_.setPoseTarget(grasp_pose);
             arm_group_.move();
             ros::Duration(sleep(0.5));
@@ -464,24 +464,24 @@ void Arm::qualityControl4Callback(const nist_gear::LogicalCameraImage::ConstPtr&
 
         if (agv =="agv1"){
             camera_frame ="logical_camera_1_"+part_type_name+"_"+std::to_string(*counter)+"_frame";
-            ROS_INFO_STREAM("Checking logical camera 1 ");
+            // ROS_INFO_STREAM("Checking logical camera 1 ");
         }
         else if (agv=="agv2"){
             camera_frame="logical_camera_4_"+part_type_name+"_"+std::to_string(*counter)+"_frame";
-            ROS_INFO_STREAM("Checking logical camera 2");
+            // ROS_INFO_STREAM("Checking logical camera 2");
         }
         else if (agv=="agv3"){
             camera_frame="logical_camera_3_"+part_type_name+"_"+std::to_string(*counter)+"_frame";
-            ROS_INFO_STREAM("Checking logical camera 2");
+            // ROS_INFO_STREAM("Checking logical camera 2");
         }
         else if (agv=="agv4"){
             camera_frame="logical_camera_2_"+part_type_name+"_"+std::to_string(*counter)+"_frame";
-            ROS_INFO_STREAM("Checking logical camera 2");
+            // ROS_INFO_STREAM("Checking logical camera 2");
         }
         
         
         final_pose_in_world = motioncontrol::transformToWorldFrame(camera_frame);
-        ROS_INFO_STREAM("final_pose_in_world "<<final_pose_in_world);
+        // ROS_INFO_STREAM("final_pose_in_world "<<final_pose_in_world);
        
         auto final_orientation = motioncontrol::eulerFromQuaternion(final_pose_in_world.orientation.x,final_pose_in_world.orientation.y,final_pose_in_world.orientation.z,final_pose_in_world.orientation.w); //quaternionFromEuler(0, 1.57, 0);
         auto target_orientation = motioncontrol::eulerFromQuaternion(target_pose_in_world.orientation.x,target_pose_in_world.orientation.y,target_pose_in_world.orientation.z,target_pose_in_world.orientation.w);
@@ -500,7 +500,7 @@ void Arm::qualityControl4Callback(const nist_gear::LogicalCameraImage::ConstPtr&
         }
         else{
             ROS_INFO_STREAM("Part placed changing");
-            ROS_INFO_STREAM(final_pose_in_world<<" goal in tray "<< target_pose_in_world <<" final pose");
+            // ROS_INFO_STREAM(final_pose_in_world<<" goal in tray "<< target_pose_in_world <<" final pose");
             
              if (pickPart(part_type_name, final_pose_in_world,1)) {
             placePart(final_pose_in_world, part_pose_in_frame, agv); /// Changed function.

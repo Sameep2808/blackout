@@ -173,7 +173,7 @@ int kit(ros::NodeHandle& node_handle, std::vector<std::pair<std::string, int>> &
             auto on = competition.get_order_id();
             if(orderid.compare(on) != 0){
                 ROS_FATAL_STREAM("HIGH PRIORITY ORDER");
-                ROS_FATAL_STREAM(on); 
+                ROS_INFO_STREAM(on); 
                 orderid = on;   
                 // Recursive Instance for High Priority Order
                 ros::NodeHandle nh;
@@ -198,7 +198,7 @@ int kit(ros::NodeHandle& node_handle, std::vector<std::pair<std::string, int>> &
             ROS_INFO_STREAM(kitting_shipment.products.size());
             // if we have placed all products in this shipment then ship the AGV
             if (product_placed_in_shipment == kitting_shipment.products.size()) {
-                ROS_FATAL_STREAM("SHIPPING");
+                ROS_INFO_STREAM("SHIPPING");
                 ros::Duration(sleep(3.0));
                 motioncontrol::Agv agv{ node_handle, kitting_shipment.agv_id };
                 if (agv.getAGVStatus()) {
@@ -211,12 +211,12 @@ int kit(ros::NodeHandle& node_handle, std::vector<std::pair<std::string, int>> &
 
     auto on = competition.get_order_id();
     if(orderid.compare(on) != 0){
-            ROS_FATAL_STREAM(on);
+            // ROS_FATAL_STREAM(on);
             kitting_shipments.clear();
             kitting_shipments = competition.getKittingShipments();
             orderid = on;
             for (auto ks : kitting_shipments){
-                ROS_FATAL_STREAM(ks.agv_id);
+                // ROS_FATAL_STREAM(ks.agv_id);
             }  
         }
         else{
