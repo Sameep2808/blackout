@@ -29,11 +29,6 @@ namespace motioncontrol {
 
     void Arm::init()
     {
-        // make sure the planning group operates in the world frame
-        // check the name of the end effector
-        // ROS_INFO_NAMED("init", "End effector link: %s", arm_group_.getEndEffectorLink().c_str());
-
-
         // publishers to directly control the joints without moveit
         arm_joint_trajectory_publisher_ =
             node_.advertise<trajectory_msgs::JointTrajectory>("/ariac/kitting/kitting_arm_controller/command", 10);
@@ -98,24 +93,17 @@ namespace motioncontrol {
         current_state->copyJointGroupPositions(joint_model_group, joint_group_positions_);
     }
         void Arm::qualityControl1Callback(const nist_gear::LogicalCameraImage::ConstPtr& msg) {
-        // ROS_INFO_STREAM("MAP size: " << logical_camera_map_.size());
         if (msg->models.size() > 0) {
-            // ROS_WARN_STREAM("Faulty part detected");
             quality_camera_1=true;
-            // ROS_WARN_STREAM("qual;ity"<<quality_camera_1_);
             }
         
         else
-        
         {
-            // ROS_WARN_STREAM("qual;ity False "<<quality_camera_1_);
             quality_camera_1=false;
         }
     }
     void Arm::qualityControl2Callback(const nist_gear::LogicalCameraImage::ConstPtr& msg) {
-        // ROS_INFO_STREAM("MAP size: " << logical_camera_map_.size());
         if (msg->models.size() > 0) {
-            // ROS_WARN_STREAM("Faulty part detected");
             quality_camera_2=true;
             }
         
@@ -244,7 +232,7 @@ void Arm::qualityControl4Callback(const nist_gear::LogicalCameraImage::ConstPtr&
         if (ss == 0){
         
         if (part_type.find("pump") != std::string::npos) {
-            z_pos = 0.86;
+            z_pos = 0.863;
         }
         if (part_type.find("sensor") != std::string::npos) {
             z_pos = 0.83;
@@ -257,7 +245,7 @@ void Arm::qualityControl4Callback(const nist_gear::LogicalCameraImage::ConstPtr&
         }}
         else{
             if (part_type.find("pump") != std::string::npos) {
-            z_pos = 0.88;
+            z_pos = 0.883;
         }
         if (part_type.find("sensor") != std::string::npos) {
             z_pos = 0.85;
@@ -459,7 +447,7 @@ void Arm::qualityControl4Callback(const nist_gear::LogicalCameraImage::ConstPtr&
             goToPresetLocation(agv);
             if (pickPart(part_type, target_pose_in_world,1)) {
                 goToPresetLocation("home2");
-                ros::Duration(8.0).sleep();
+                ros::Duration(2.0).sleep();
                 deactivateGripper();
                 std::string camera_frame=get_camera_frame_of_moving_object();
                 int _count=1;

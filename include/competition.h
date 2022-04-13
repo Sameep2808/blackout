@@ -52,12 +52,41 @@ namespace motioncontrol {
          */
         void competitionClockCallback(const rosgraph_msgs::Clock::ConstPtr& msg);
 
-
+        /**
+         * @brief Gets the order that is annnounced
+         * 
+         * @param msg 
+         */
         void competitionOrderCallback(const nist_gear::Order::ConstPtr& msg);
+        
+        /**
+         * @brief Subscriber to get the data of parts from logical camea 1
+         * 
+         * @param msg 
+         */
         void logicalCamera1Callback(const nist_gear::LogicalCameraImage::ConstPtr & msg);
+        
+        /**
+         * @brief Subscriber to get the data of parts from logical camea 2
+         * 
+         * @param msg 
+         */
         void logicalCamera2Callback(const nist_gear::LogicalCameraImage::ConstPtr & msg);
+        
+        /**
+         * @brief Subscriber to get the data of parts from logical camea 3
+         * 
+         * @param msg 
+         */
         void logicalCamera3Callback(const nist_gear::LogicalCameraImage::ConstPtr & msg);
+        
+        /**
+         * @brief Subscriber to get the data of parts from logical camea 4
+         * 
+         * @param msg 
+         */
         void logicalCamera4Callback(const nist_gear::LogicalCameraImage::ConstPtr & msg);
+        
         /**
          * @brief Get the Clock objectGet
          *
@@ -77,32 +106,68 @@ namespace motioncontrol {
          */
         std::string getCompetitionState();
 
+        //-  string variable which has order id
         std::string order_id;
 
+        /**
+         * @brief Get the Kitting Shipments
+         * 
+         * @return std::vector<nist_gear::KittingShipment> 
+         */
         std::vector<nist_gear::KittingShipment> getKittingShipments(){
             return competition_kitting_shipments_;
         }
 
+        /**
+         * @brief Get the order id object
+         * 
+         * @return std::string 
+         */
         std::string get_order_id(){
             return order_id;
         }
 
+        /**
+         * @brief Get the camera data map
+         * 
+         * @return const std::map<std::string, std::vector<std::string> >& 
+         */
         const std::map<std::string, std::vector<std::string> >& get_camera_data(){
             return logical_camera_map_;
         }
 
+        /**
+         * @brief Get the logical camera1 data 
+         * 
+         * @return const std::pair<std::string, std::string >& 
+         */
         const std::pair<std::string, std::string >& get_logical_camera1_data() {
             return logical_camera_1_;
         }
 
+        /**
+         * @brief Get the logical camera2 data 
+         * 
+         * @return const std::pair<std::string, std::string >& 
+         */
         const std::pair<std::string, std::string >& get_logical_camera2_data() {
             return logical_camera_2_;
         }
 
+        /**
+         * @brief Get the logical camera3 data object
+         * 
+         * @return const std::pair<std::string, std::string >& 
+         */
         const std::pair<std::string, std::string >& get_logical_camera3_data() {
             return logical_camera_3_;
         }
 
+        /**
+         * @brief Get the logical camera4 data
+         * 
+         * @return const std::pair<std::string, std::string >& 
+         */
         const std::pair<std::string, std::string >& get_logical_camera4_data() {
             return logical_camera_4_;
         }
@@ -143,6 +208,7 @@ namespace motioncontrol {
         // Hash maps of part typesfirst
         // example of assembly_blue_battery found by 2 logical cameras
         //<assembly_battery_blue, <logical_camera_1, logical_camera_3> >
+        //--variables decleration for storing the logical camera data
         std::map<std::string, std::vector<std::string> > logical_camera_map_;
         std::pair<std::string, std::string> logical_camera_1_;
         std::pair<std::string, std::string> logical_camera_3_;

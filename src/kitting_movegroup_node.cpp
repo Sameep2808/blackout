@@ -216,7 +216,7 @@ int kit(ros::NodeHandle& node_handle, std::vector<std::pair<std::string, int>> &
             // if we have placed all products in this shipment then ship the AGV
             if (product_placed_in_shipment == kitting_shipment.products.size()) {
                 ROS_FATAL_STREAM("SHIPPING");
-                ros::Duration(sleep(5.0));
+                ros::Duration(sleep(3.0));
                 motioncontrol::Agv agv{ node_handle, kitting_shipment.agv_id };
                 if (agv.getAGVStatus()) {
                     agv.shipAgv(kitting_shipment.shipment_type, kitting_shipment.station_id);

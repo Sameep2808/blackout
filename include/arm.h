@@ -44,30 +44,109 @@ namespace motioncontrol {
          * @brief Initialize the object
          */
         void init();
+
+        /**
+         * @brief Returns true if the part is sucessfully picked up by the robotic arm.
+         * 
+         * @param part_type - Name of the part which needs to be picked up
+         * @param part_pose - Pose of the part from which it need to be picked up
+         * @param ss - integer to switch values of between bin and tray.
+         after which it slows down for attaching the object.
+         * @return true - True if sucessfully picked
+         * @return false - False if not picked up 
+         */
         bool pickPart(std::string part_type, geometry_msgs::Pose part_pose, int ss);
+        
+        /**
+         * @brief Places the part to the given desired location on the given agv nad return true when the part is sucessfully kept. 
+         * 
+         * @param part_init_pose - Global pose of the part in the bin or current position at the starting of this function
+         * @param part_goal_pose - The pose at which the part needs to be kept on the agv with reference to the camera frame.
+         * @param agv - AGV name on which the part needs to be kept
+         * @return true - Part sucessfully picked up
+         * @return false - Part was not picked up sucessfully
+         */
         bool placePart(geometry_msgs::Pose part_init_pose, geometry_msgs::Pose part_goal_pose, std::string agv);
         void testPreset(const std::vector<ArmPresetLocation>& preset_list);
         void movePart(std::string part_type, std::string camera_frame, geometry_msgs::Pose goal_in_tray_frame, std::string agv);
         void activateGripper();
         void deactivateGripper();
 
+        /**
+         * @brief check the part of the pose after the part is dettached from the robot.
+         If the orientation and position is right according to the order id then this function calls 
+         pickpart and place part to correctly place the  object with respect to the order.
+         * 
+         * @param target_pose_in_world - position where the object needs to be kept on agv with respect to the camera frame
+         * @param agv - Agv where the part is to be kept
+         */
         void check_part_pose(geometry_msgs::Pose target_pose_in_world,std::string agv);
 
+        /**
+         * @brief Callback for the subscriber of logical camera 1
+         * 
+         * @param msg data from the subscriber of logical camera
+         */
         void qualityControl1Callback(const nist_gear::LogicalCameraImage::ConstPtr & msg);
+        
+        /**
+         * @brief Callback for the subscriber of logical camera 2
+         * 
+         * @param msg data from the subscriber of logical camera
+         */
         void qualityControl2Callback(const nist_gear::LogicalCameraImage::ConstPtr & msg);
+        
+        /**
+         * @brief Callback for the subscriber of logical camera 3
+         * 
+         * @param msg data from the subscriber of logical camera
+         */
         void qualityControl3Callback(const nist_gear::LogicalCameraImage::ConstPtr & msg);
+        
+        /**
+         * @brief Callback for the subscriber of logical camera 4
+         * 
+         * @param msg data from the subscriber of logical camera
+         */
         void qualityControl4Callback(const nist_gear::LogicalCameraImage::ConstPtr & msg);
-                
-         bool& get_quality_camera1_data(){
+
+        /**
+          * @brief Get the quality of objects in quality camera1 data 
+          * 
+          * @return true - True if faulty part is found
+          * @return false - False if not found
+          */       
+        bool& get_quality_camera1_data(){
             return quality_camera_1;
         }
-          bool& get_quality_camera2_data(){
+
+        /**
+          * @brief Get the quality of objects in quality camera2 data 
+          * 
+          * @return true - True if faulty part is found
+          * @return false - False if not found
+          */
+        bool& get_quality_camera2_data(){
             return quality_camera_2;
         }
-          bool& get_quality_camera3_data(){
+
+        /**
+          * @brief Get the quality of objects in quality camera3 data 
+          * 
+          * @return true - True if faulty part is found
+          * @return false - False if not found
+          */
+        bool& get_quality_camera3_data(){
             return quality_camera_3;
         }
-          bool& get_quality_camera4_data(){
+
+        /**
+          * @brief Get the quality of objects in quality camera4 data 
+          * 
+          * @return true - True if faulty part is found
+          * @return false - False if not found
+          */
+        bool& get_quality_camera4_data(){
             return quality_camera_4;
         }
 
@@ -93,17 +172,26 @@ namespace motioncontrol {
         start home1_, home2_;
         agv agv1_, agv2_, agv3_, agv4_;
 
+        //-- pointer variable for the current part number
         int* counter;
+
+        //-- boolean variables for faulty parts detected
         bool quality_camera_1;
         bool quality_camera_2;
         bool quality_camera_3;
         bool quality_camera_4;
         bool quality_camera[4];
 
+        /**
+         * @brief Get the camera frame of moving object/object that is being placed 
+         * 
+         * @return std::string - camera name which detected the object
+         */
         std::string get_camera_frame_of_moving_object(){
             return camera_frame_of_moving_object;
         } 
 
+        //-- string variable contatining camera frame name
         std::string camera_frame_of_moving_object;
 
         private:
@@ -130,9 +218,20 @@ namespace motioncontrol {
 
         std::string part_type_name;
 
+        /**
+         * @brief Gets the pointer of counter or the number of the current part 
+         * 
+         * @return int* 
+         */
         int *get_counter(){
             return counter;
         }
+
+        /**
+         * @brief Get the part type name 
+         * 
+         * @return auto - string of part type name
+         */
         auto get_part_type_name(){
             return part_type_name;
         }
