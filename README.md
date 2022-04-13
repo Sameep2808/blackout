@@ -1,10 +1,6 @@
 # GROUP3_RWA3
 GROUP3 RWA3 Package.
 
-# Disclaimer
-
-This package is provided as an example on how to perform kitting with the kitting robot. There is no guarantee that it will work everytime you run the demo.
-
 # Installation
 
 Assuming your catkin workspace is `ariac_ws`
