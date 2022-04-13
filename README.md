@@ -7,28 +7,22 @@ This package is provided as an example on how to perform kitting with the kittin
 
 # Installation
 
-Assuming your catkin workspace is `catkin_ws`
+Assuming your catkin workspace is `ariac_ws`
 ```bash
-cd ~/catkin_ws/src
-git clone https://github.com/zeidk/RWA3_ENPM809E.git
+cd ~/ariac_ws/src
+git clone 
 cd ..
 rosdep install --from-paths ./src --ignore-packages-from-source -y
 catkin build
-source ~/catkin_ws/setup.bash
+source ~/ariac_ws/devel/setup.bash
 ```
 
 # Run
 
-- To run the C++ code
+- To run the code
 
 ```bash
-roslaunch RWA3_ENPM809E ariac.launch
-rosrun RWA3_ENPM809E kitting_movegroup_node
+roslaunch group3_rwa3 ariac.launch
+rosrun group3_rwa3 kitting_movegroup_node
 ```
 
-- To run the Python code
-
-```bash
-roslaunch RWA3_ENPM809E ariac.launch
-rosrun RWA3_ENPM809E kitting_commander_node
-```

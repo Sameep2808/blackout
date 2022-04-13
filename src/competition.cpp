@@ -44,7 +44,6 @@ namespace motioncontrol {
         startCompetition();
     }
 
-    // This code will not work if the logical camera detects different parts in different bins
     void Competition::logicalCamera1Callback(const nist_gear::LogicalCameraImage::ConstPtr& msg) {
         // ROS_INFO_STREAM("MAP size: " << logical_camera_map_.size());
         if (msg->models.size() > 0) {
@@ -55,8 +54,6 @@ namespace motioncontrol {
                     
                     if ((pos.position.y > 0))
                     {
-                        // ROS_FATAL_STREAM("DETECT");
-                        // ROS_FATAL_STREAM(pos.position.y);
                         logical_camera_1_.first = model.type;
                         logical_camera_1_.second = "logical_camera_1";
                     }
@@ -72,7 +69,6 @@ namespace motioncontrol {
 
 
     void Competition::logicalCamera2Callback(const nist_gear::LogicalCameraImage::ConstPtr& msg) {
-        // ROS_INFO_STREAM("MAP size: " << logical_camera_map_.size());
         if (msg->models.size() > 0) {
             if (logical_camera_2_.first.compare("") == 0) {
                 for (auto const& model : msg->models) {
@@ -93,7 +89,6 @@ namespace motioncontrol {
     }
 
     void Competition::logicalCamera3Callback(const nist_gear::LogicalCameraImage::ConstPtr& msg) {
-        // ROS_INFO_STREAM("MAP size: " << logical_camera_map_.size());
         if (msg->models.size() > 0) {
             if (logical_camera_3_.first.compare("") == 0) {
                 for (auto const& model : msg->models) {
@@ -114,7 +109,6 @@ namespace motioncontrol {
     }
 
     void Competition::logicalCamera4Callback(const nist_gear::LogicalCameraImage::ConstPtr& msg) {
-        // ROS_INFO_STREAM("MAP size: " << logical_camera_map_.size());
         if (msg->models.size() > 0) {
             if (logical_camera_4_.first.compare("") == 0) {
                 for (auto const& model : msg->models) {

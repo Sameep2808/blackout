@@ -65,20 +65,12 @@ int kit(ros::NodeHandle& node_handle, std::vector<std::pair<std::string, int>> &
     arm.goToPresetLocation("home1");
     arm.goToPresetLocation("home2");
 
-    // this variable will be used to build frame names (see line 142)
-    int counter{};
     // parse each kitting shipment
-
-    // std::vector<std::pair<std::string, int>> product_list{};
 
     while(1){
     
     for (auto& kitting_shipment : kitting_shipments) {
-        // counter++;
-        // list of different product types
-        // if the shipment has 2 blue batteries then only 1 blue
-        // battery is placed in this list.
-        // the list will look like this:
+        
         // [('assembly_pump_red', nist_gear::Product), ('assembly_battery_blue', nist_gear::Product)]
         // std::vector<std::pair<std::string, nist_gear::Product>> product_list{};
         
@@ -108,10 +100,6 @@ int kit(ros::NodeHandle& node_handle, std::vector<std::pair<std::string, int>> &
             }   
         }
 
-        // for(auto p : product_list){
-        //     ROS_FATAL_STREAM(p.first);
-        // }
-
         // Let's wait 10 s
         // data should be publishing after 5 seconds
         double outside_time = ros::Time::now().toSec();
@@ -125,14 +113,7 @@ int kit(ros::NodeHandle& node_handle, std::vector<std::pair<std::string, int>> &
         auto camera2_data = competition.get_logical_camera2_data();
         auto camera3_data = competition.get_logical_camera3_data();
         auto camera4_data = competition.get_logical_camera4_data();
-        // ROS_FATAL_STREAM(camera1_data.first);
-        // ROS_FATAL_STREAM(camera1_data.second);
-        // ROS_FATAL_STREAM(camera2_data.first);
-        // ROS_FATAL_STREAM(camera2_data.second);
-        // ROS_FATAL_STREAM(camera3_data.first);
-        // ROS_FATAL_STREAM(camera3_data.second);
-        // ROS_FATAL_STREAM(camera4_data.first);
-        // ROS_FATAL_STREAM(camera4_data.second);
+
         if ((camera1_data.first.compare("") == 0) && (camera2_data.first.compare("") == 0)  && (camera3_data.first.compare("") == 0)  && (camera4_data.first.compare("") == 0)) {
             ROS_FATAL_STREAM("No data reported by any logical camera");
             ros::shutdown();
@@ -187,23 +168,25 @@ int kit(ros::NodeHandle& node_handle, std::vector<std::pair<std::string, int>> &
         // keep track of how many products have been placed in this shipment
         int product_placed_in_shipment{};
         for (auto iter : camera_for_product) {
-
+            
+            // keep track of any HIGH Priority order called
             auto on = competition.get_order_id();
             if(orderid.compare(on) != 0){
                 ROS_FATAL_STREAM("HIGH PRIORITY ORDER");
                 ROS_FATAL_STREAM(on); 
                 orderid = on;   
+                // Recursive Instance for High Priority Order
                 ros::NodeHandle nh;
                 int fr = kit(nh, product_list); 
             }
             
+            // Counter to get the exact number of the product being used
             int* co;
             for (auto& p : product_list){
                 if(p.first.compare(iter.first.type) == 0)
                 {
                     co = &p.second;
                     p.second = p.second + 1; 
-                    // ROS_FATAL_STREAM(p.second);
                 }
             }
             arm.counter = co;
@@ -222,21 +205,10 @@ int kit(ros::NodeHandle& node_handle, std::vector<std::pair<std::string, int>> &
                     agv.shipAgv(kitting_shipment.shipment_type, kitting_shipment.station_id);
                     ros::Duration(2.0).sleep();
                 }
-                // ros::Duration(2.0).sleep();
             }
-        }
-
-        // auto on = competition.get_order_id();
-        // if(orderid.compare(on) != 0){
-        //         ROS_FATAL_STREAM("HIGH PRIORITY ORDER");
-        //         ROS_FATAL_STREAM(on);
-        //         orderid = on;   
-        //         ros::NodeHandle nh;
-        //         int fr = kit(nh, product_list); 
-        // }
-       
-        
+        }      
     }
+
     auto on = competition.get_order_id();
     if(orderid.compare(on) != 0){
             ROS_FATAL_STREAM(on);

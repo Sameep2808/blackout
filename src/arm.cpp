@@ -113,26 +113,19 @@ namespace motioncontrol {
         }
     }
 void Arm::qualityControl3Callback(const nist_gear::LogicalCameraImage::ConstPtr& msg) {
-        // ROS_INFO_STREAM("MAP size: " << logical_camera_map_.size());
         if (msg->models.size() > 0) {
-            // ROS_WARN_STREAM("Faulty part detected");
             quality_camera_3=true;
             }
-        
-        else
-        {
+        else{
             quality_camera_3=false;
         }
     }
 void Arm::qualityControl4Callback(const nist_gear::LogicalCameraImage::ConstPtr& msg) {
         
         if (msg->models.size() > 0) {
-            // ROS_WARN_STREAM("Faulty part detected");
             quality_camera_4=true;
             }
-        
-        else
-        {
+        else{
             quality_camera_4=false;
         }
     }
@@ -165,13 +158,7 @@ void Arm::qualityControl4Callback(const nist_gear::LogicalCameraImage::ConstPtr&
         
         auto target_pose_in_world = motioncontrol::transformToWorldFrame(goal_in_tray_frame, agv);
         if (pickPart(part_type, init_pose_in_world,0)) {
-            // ROS_INFO_STREAM("camera_frame ,"<<camera_frame);
             placePart(init_pose_in_world, goal_in_tray_frame, agv); /// Changed function.
-            // auto final_pose_in_world = motioncontrol::transformToWorldFrame(camera_frame);
-            // check_part_pose(final_pose_in_world,goal_in_tray_frame,agv);
-                
-            
-
         }
     }
 
@@ -408,17 +395,12 @@ void Arm::qualityControl4Callback(const nist_gear::LogicalCameraImage::ConstPtr&
         arm_group_.setMaxVelocityScalingFactor(1.0);
         auto part_type=get_part_type_name();
         
-        
-        // auto final_pose_in_world = motioncontrol::transformToWorldFrame(camera_frame);
         ros::Duration(0.5).sleep();
         
         check_part_pose(part_pose_in_frame,agv);
         check_faulty_part(part_type,part_pose_in_frame,agv);
-        //goToPresetLocation("home2");
 
         return true;
-        // TODO: check the part was actually placed in the correct pose in the agv
-        // and that it is not faulty
     }
   
     void Arm::check_faulty_part(std::string part_type,geometry_msgs::Pose part_pose_in_frame,std::string agv)
@@ -454,33 +436,22 @@ void Arm::qualityControl4Callback(const nist_gear::LogicalCameraImage::ConstPtr&
                 std::string camera_name="";
                 // std::string part_type="";
                 for(auto i:camera_frame){
-                    // if (_count>=4){
-                    //     // part_type=part_type+i;
-                    // }
                     if (i=='_'){
                         if(_count==6){
                             break;
                         }
-                        _count=_count+1;}
+                        _count=_count+1;
+                    }
                     camera_name=camera_name+i;
                 }
 
                 int* counter_pointer=get_counter();
                 *counter_pointer=*counter_pointer+1;
                 
-                // ros::shutdown();
                 camera_name=camera_name+"_"+std::to_string(*counter_pointer)+"_frame";
-                //part_type=part_type+std::to_string(*counter_pointer);
-            
-                // ROS_ERROR_STREAM("counter_pointer " <<part_type);
                 movePart( part_type, camera_name,  part_pose_in_frame,  agv);
-            // movePart(std::string part_type, std::string camera_frame, geometry_msgs::Pose goal_in_tray_frame, std::string agv)
             }
-        }
-        // auto target_pose_in_world = motioncontrol::transformToWorldFrame(
-        //     part_pose_in_frame,
-        //     agv);
-           
+        }   
     }
     void Arm::check_part_pose(geometry_msgs::Pose part_pose_in_frame,std::string agv){
             //Checks part pose and if not correct then corrects pose.
