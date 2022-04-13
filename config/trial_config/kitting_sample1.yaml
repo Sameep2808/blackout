@@ -99,7 +99,7 @@ models_over_bins:
         num_models_y: 2
 
 sensor_blackout:
-  product_count: 10
+  product_count: 1
   duration: 30
 
 faulty_products:
