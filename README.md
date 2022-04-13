@@ -10,7 +10,7 @@ This package is provided as an example on how to perform kitting with the kittin
 Assuming your catkin workspace is `ariac_ws`
 ```bash
 cd ~/ariac_ws/src
-git clone 
+git clone https://github.com/Sameep2808/group3_rwa3.git
 cd ..
 rosdep install --from-paths ./src --ignore-packages-from-source -y
 catkin build
