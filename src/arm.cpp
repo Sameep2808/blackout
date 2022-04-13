@@ -284,8 +284,8 @@ void Arm::qualityControl4Callback(const nist_gear::LogicalCameraImage::ConstPtr&
         and retreat grasp motions. Here we demonstrate how to reduce the speed and the acceleration
         of the robot arm via a scaling factor of the maxiumum speed of each joint.
         */
-        arm_group_.setMaxVelocityScalingFactor(0.1); // 0.05
-        arm_group_.setMaxAccelerationScalingFactor(0.1);
+        arm_group_.setMaxVelocityScalingFactor(0.05); // 0.05
+        arm_group_.setMaxAccelerationScalingFactor(0.05);
         // plan the cartesian motion and execute it
         moveit_msgs::RobotTrajectory trajectory;
         const double jump_threshold = 0.0;
@@ -299,7 +299,7 @@ void Arm::qualityControl4Callback(const nist_gear::LogicalCameraImage::ConstPtr&
 
         // move the arm 1 mm down until the part is attached
         while (!gripper_state_.attached) {
-            grasp_pose.position.z -= 0.005; // 0.001
+            grasp_pose.position.z -= 0.001; // 0.001
             arm_group_.setPoseTarget(grasp_pose);
             arm_group_.move();
             ros::Duration(sleep(0.5));
