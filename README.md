@@ -1,5 +1,5 @@
-# RWA3_ENPM809E
-Baseline package for RWA3.
+# GROUP3_RWA3
+GROUP3 RWA3 Package.
 
 # Disclaimer
 
